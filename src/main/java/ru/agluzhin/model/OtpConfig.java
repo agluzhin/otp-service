@@ -17,4 +17,5 @@ public class OtpConfig {
 
     public int getTtlSeconds() { return ttlSeconds; }
     public void setTtlSeconds(int ttlSeconds) { this.ttlSeconds = ttlSeconds; }
+
 }
