@@ -21,16 +21,15 @@ public class EmailNotificationService implements NotificationChannel {
 
     public EmailNotificationService() {
         Properties config = loadConfig();
-        this.username  = config.getProperty("email.username");
-        this.password  = config.getProperty("email.password");
+        this.username = config.getProperty("email.username");
+        this.password = config.getProperty("email.password");
         this.fromEmail = config.getProperty("email.from");
 
-        // Build SMTP session properties from the same file
         Properties smtpProps = new Properties();
-        smtpProps.put("mail.smtp.host",             config.getProperty("mail.smtp.host"));
-        smtpProps.put("mail.smtp.port",             config.getProperty("mail.smtp.port"));
-        smtpProps.put("mail.smtp.auth",             config.getProperty("mail.smtp.auth"));
-        smtpProps.put("mail.smtp.starttls.enable",  config.getProperty("mail.smtp.starttls.enable"));
+        smtpProps.put("mail.smtp.host", config.getProperty("mail.smtp.host"));
+        smtpProps.put("mail.smtp.port", config.getProperty("mail.smtp.port"));
+        smtpProps.put("mail.smtp.auth", config.getProperty("mail.smtp.auth"));
+        smtpProps.put("mail.smtp.starttls.enable", config.getProperty("mail.smtp.starttls.enable"));
 
         this.session = Session.getInstance(smtpProps, new Authenticator() {
             @Override

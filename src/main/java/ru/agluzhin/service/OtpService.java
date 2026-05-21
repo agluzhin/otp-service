@@ -1,5 +1,7 @@
 package ru.agluzhin.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.agluzhin.dao.OtpCodeDao;
 import ru.agluzhin.dao.OtpConfigDao;
 import ru.agluzhin.exception.InvalidOtpException;
@@ -8,8 +10,6 @@ import ru.agluzhin.model.OtpConfig;
 import ru.agluzhin.model.OtpStatus;
 import ru.agluzhin.service.notification.NotificationChannel;
 import ru.agluzhin.service.notification.NotificationChannelType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.security.SecureRandom;
 import java.time.OffsetDateTime;
@@ -19,7 +19,7 @@ public class OtpService {
     private static final Logger log = LoggerFactory.getLogger(OtpService.class);
     private static final SecureRandom RANDOM = new SecureRandom();
 
-    private final OtpCodeDao   otpCodeDao;
+    private final OtpCodeDao otpCodeDao;
     private final OtpConfigDao otpConfigDao;
 
     public OtpService() {
@@ -27,7 +27,7 @@ public class OtpService {
     }
 
     public OtpService(OtpCodeDao otpCodeDao, OtpConfigDao otpConfigDao) {
-        this.otpCodeDao   = otpCodeDao;
+        this.otpCodeDao = otpCodeDao;
         this.otpConfigDao = otpConfigDao;
     }
 
@@ -73,7 +73,6 @@ public class OtpService {
                 .findActiveByUserAndOperation(userId, operationId)
                 .orElseThrow(() -> new InvalidOtpException("no active code found for this operation"));
 
-        // Double-check expiry in application layer (scheduler may not have run yet)
         if (OffsetDateTime.now().isAfter(otpCode.getExpiresAt())) {
             otpCodeDao.updateStatus(otpCode.getId(), OtpStatus.EXPIRED);
             log.warn("OTP expired at validation: userId={} operationId={}", userId, operationId);
@@ -88,8 +87,6 @@ public class OtpService {
         otpCodeDao.updateStatus(otpCode.getId(), OtpStatus.USED);
         log.info("OTP validated successfully: userId={} operationId={}", userId, operationId);
     }
-
-    // --- Private helpers ---
 
     private String generateNumericCode(int length) {
         StringBuilder sb = new StringBuilder(length);

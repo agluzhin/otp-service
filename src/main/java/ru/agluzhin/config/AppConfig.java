@@ -1,11 +1,14 @@
 package ru.agluzhin.config;
 
+import lombok.Getter;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class AppConfig {
 
+    @Getter
     private static final AppConfig INSTANCE = new AppConfig();
 
     private final Properties props = new Properties();
@@ -19,10 +22,6 @@ public class AppConfig {
         } catch (IOException e) {
             throw new IllegalStateException("Failed to load application.properties", e);
         }
-    }
-
-    public static AppConfig getInstance() {
-        return INSTANCE;
     }
 
     public int getServerPort() {

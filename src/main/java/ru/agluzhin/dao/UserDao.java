@@ -1,10 +1,10 @@
 package ru.agluzhin.dao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.agluzhin.config.DatabaseConfig;
 import ru.agluzhin.model.Role;
 import ru.agluzhin.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -19,10 +19,9 @@ public class UserDao {
     private final DataSource dataSource;
 
     public UserDao() {
-        this.dataSource = DatabaseConfig.getInstance().getDataSource();
+        this.dataSource = DatabaseConfig.getINSTANCE().getDataSource();
     }
 
-    // Constructor for testing (allows mock DataSource injection)
     public UserDao(DataSource dataSource) {
         this.dataSource = dataSource;
     }

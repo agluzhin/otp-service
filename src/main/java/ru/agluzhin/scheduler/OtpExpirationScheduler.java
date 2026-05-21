@@ -23,7 +23,7 @@ public class OtpExpirationScheduler {
     private final long intervalSeconds;
 
     public OtpExpirationScheduler() {
-        this(new OtpCodeDao(), AppConfig.getInstance().getSchedulerIntervalSeconds());
+        this(new OtpCodeDao(), AppConfig.getINSTANCE().getSchedulerIntervalSeconds());
     }
 
     public OtpExpirationScheduler(OtpCodeDao otpCodeDao, long intervalSeconds) {

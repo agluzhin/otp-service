@@ -1,20 +1,20 @@
 package ru.agluzhin.handler;
 
-import ru.agluzhin.exception.InvalidOtpException;
-import ru.agluzhin.service.OtpService;
-import ru.agluzhin.service.notification.NotificationChannelType;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.agluzhin.exception.InvalidOtpException;
+import ru.agluzhin.service.OtpService;
+import ru.agluzhin.service.notification.NotificationChannelType;
 
 import java.io.IOException;
 import java.util.Map;
 
 /**
  * Handles user OTP endpoints (protected by JwtFilter with any authenticated role):
- *   POST /otp/generate   — generate and deliver an OTP code
- *   POST /otp/validate   — validate a submitted OTP code
+ * POST /otp/generate   — generate and deliver an OTP code
+ * POST /otp/validate   — validate a submitted OTP code
  */
 public class OtpHandler extends BaseHandler implements HttpHandler {
 
@@ -29,7 +29,7 @@ public class OtpHandler extends BaseHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String method = exchange.getRequestMethod();
-        String path   = exchange.getRequestURI().getPath();
+        String path = exchange.getRequestURI().getPath();
 
         log.info("→ {} {} userId={}", method, path, getUserId(exchange));
 
@@ -52,9 +52,9 @@ public class OtpHandler extends BaseHandler implements HttpHandler {
     private void handleGenerate(HttpExchange exchange) throws IOException {
         Map<String, Object> body = parseJson(readBody(exchange));
 
-        String operationId  = requireString(body, "operationId");
-        String channelStr   = requireString(body, "channel");
-        String destination  = requireString(body, "destination");
+        String operationId = requireString(body, "operationId");
+        String channelStr = requireString(body, "channel");
+        String destination = requireString(body, "destination");
 
         NotificationChannelType channelType;
         try {
@@ -74,8 +74,8 @@ public class OtpHandler extends BaseHandler implements HttpHandler {
     private void handleValidate(HttpExchange exchange) throws IOException {
         Map<String, Object> body = parseJson(readBody(exchange));
 
-        String operationId    = requireString(body, "operationId");
-        String submittedCode  = requireString(body, "code");
+        String operationId = requireString(body, "operationId");
+        String submittedCode = requireString(body, "code");
 
         long userId = getUserId(exchange);
 

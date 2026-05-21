@@ -16,7 +16,7 @@ public class SmsNotificationService implements NotificationChannel {
     private static final Logger log = LoggerFactory.getLogger(SmsNotificationService.class);
 
     private final String host;
-    private final int    port;
+    private final int port;
     private final String systemId;
     private final String password;
     private final String systemType;
@@ -24,11 +24,11 @@ public class SmsNotificationService implements NotificationChannel {
 
     public SmsNotificationService() {
         Properties cfg = loadConfig();
-        this.host          = cfg.getProperty("smpp.host");
-        this.port          = Integer.parseInt(cfg.getProperty("smpp.port"));
-        this.systemId      = cfg.getProperty("smpp.system_id");
-        this.password      = cfg.getProperty("smpp.password");
-        this.systemType    = cfg.getProperty("smpp.system_type");
+        this.host = cfg.getProperty("smpp.host");
+        this.port = Integer.parseInt(cfg.getProperty("smpp.port"));
+        this.systemId = cfg.getProperty("smpp.system_id");
+        this.password = cfg.getProperty("smpp.password");
+        this.systemType = cfg.getProperty("smpp.system_type");
         this.sourceAddress = cfg.getProperty("smpp.source_addr");
     }
 

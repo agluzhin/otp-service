@@ -1,11 +1,11 @@
 package ru.agluzhin.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ru.agluzhin.middleware.JwtFilter;
-import ru.agluzhin.model.Role;
 import com.sun.net.httpserver.HttpExchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.agluzhin.middleware.JwtFilter;
+import ru.agluzhin.model.Role;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,8 +20,6 @@ public abstract class BaseHandler {
 
     private static final Logger log = LoggerFactory.getLogger(BaseHandler.class);
     protected static final ObjectMapper MAPPER = new ObjectMapper();
-
-    // --- Request helpers ---
 
     protected String readBody(HttpExchange exchange) throws IOException {
         try (InputStream is = exchange.getRequestBody()) {
@@ -54,8 +52,6 @@ public abstract class BaseHandler {
         }
     }
 
-    // --- Response helpers ---
-
     protected void sendJson(HttpExchange exchange, int status, Object responseBody) throws IOException {
         byte[] bytes = MAPPER.writeValueAsBytes(responseBody);
         exchange.getResponseHeaders().set("Content-Type", "application/json; charset=utf-8");
@@ -73,8 +69,6 @@ public abstract class BaseHandler {
         sendJson(exchange, 200, Map.of("message", message));
     }
 
-    // --- Auth attribute helpers ---
-
     protected long getUserId(HttpExchange exchange) {
         return (long) exchange.getAttribute(JwtFilter.ATTR_USER_ID);
     }
@@ -82,8 +76,6 @@ public abstract class BaseHandler {
     protected Role getRole(HttpExchange exchange) {
         return (Role) exchange.getAttribute(JwtFilter.ATTR_ROLE);
     }
-
-    // --- Routing helper ---
 
     /**
      * Returns the last path segment, e.g. "/admin/users/42" → "42".

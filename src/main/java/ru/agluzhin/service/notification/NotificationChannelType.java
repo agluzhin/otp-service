@@ -8,10 +8,10 @@ public enum NotificationChannelType {
 
     public NotificationChannel createChannel() {
         return switch (this) {
-            case EMAIL    -> new EmailNotificationService();
-            case SMS      -> new SmsNotificationService();
+            case EMAIL -> new EmailNotificationService();
+            case SMS -> new SmsNotificationService();
             case TELEGRAM -> new TelegramNotificationService();
-            case FILE     -> new FileNotificationService();
+            case FILE -> new FileNotificationService();
         };
     }
 

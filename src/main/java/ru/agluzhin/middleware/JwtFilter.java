@@ -1,13 +1,13 @@
 package ru.agluzhin.middleware;
 
-import ru.agluzhin.model.Role;
-import ru.agluzhin.service.AuthService;
-import ru.agluzhin.service.AuthService.TokenClaims;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import io.jsonwebtoken.JwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.agluzhin.model.Role;
+import ru.agluzhin.service.AuthService;
+import ru.agluzhin.service.AuthService.TokenClaims;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -20,18 +20,17 @@ public class JwtFilter implements HttpHandler {
 
     private static final Logger log = LoggerFactory.getLogger(JwtFilter.class);
 
-    // Keys used to pass parsed claims to downstream handlers via HttpContext attributes
     public static final String ATTR_USER_ID = "userId";
-    public static final String ATTR_LOGIN   = "login";
-    public static final String ATTR_ROLE    = "role";
+    public static final String ATTR_LOGIN = "login";
+    public static final String ATTR_ROLE = "role";
 
-    private final HttpHandler  delegate;
-    private final AuthService  authService;
-    private final Role         requiredRole; // null = any authenticated user is accepted
+    private final HttpHandler delegate;
+    private final AuthService authService;
+    private final Role requiredRole;
 
     public JwtFilter(HttpHandler delegate, AuthService authService, Role requiredRole) {
-        this.delegate     = delegate;
-        this.authService  = authService;
+        this.delegate = delegate;
+        this.authService = authService;
         this.requiredRole = requiredRole;
     }
 
@@ -62,8 +61,8 @@ public class JwtFilter implements HttpHandler {
 
         // Inject claims so handlers can read them without re-parsing the token
         exchange.setAttribute(ATTR_USER_ID, claims.userId());
-        exchange.setAttribute(ATTR_LOGIN,   claims.login());
-        exchange.setAttribute(ATTR_ROLE,    claims.role());
+        exchange.setAttribute(ATTR_LOGIN, claims.login());
+        exchange.setAttribute(ATTR_ROLE, claims.role());
 
         delegate.handle(exchange);
     }

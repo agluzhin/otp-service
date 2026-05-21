@@ -15,7 +15,7 @@ public class OtpConfigDao {
     private final DataSource dataSource;
 
     public OtpConfigDao() {
-        this.dataSource = DatabaseConfig.getInstance().getDataSource();
+        this.dataSource = DatabaseConfig.getINSTANCE().getDataSource();
     }
 
     public OtpConfigDao(DataSource dataSource) {

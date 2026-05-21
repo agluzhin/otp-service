@@ -1,5 +1,7 @@
 package ru.agluzhin.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.agluzhin.dao.OtpCodeDao;
 import ru.agluzhin.dao.OtpConfigDao;
 import ru.agluzhin.dao.UserDao;
@@ -7,8 +9,6 @@ import ru.agluzhin.exception.UserNotFoundException;
 import ru.agluzhin.model.OtpConfig;
 import ru.agluzhin.model.Role;
 import ru.agluzhin.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -16,8 +16,8 @@ public class AdminService {
 
     private static final Logger log = LoggerFactory.getLogger(AdminService.class);
 
-    private final UserDao      userDao;
-    private final OtpCodeDao   otpCodeDao;
+    private final UserDao userDao;
+    private final OtpCodeDao otpCodeDao;
     private final OtpConfigDao otpConfigDao;
 
     public AdminService() {
@@ -25,8 +25,8 @@ public class AdminService {
     }
 
     public AdminService(UserDao userDao, OtpCodeDao otpCodeDao, OtpConfigDao otpConfigDao) {
-        this.userDao      = userDao;
-        this.otpCodeDao   = otpCodeDao;
+        this.userDao = userDao;
+        this.otpCodeDao = otpCodeDao;
         this.otpConfigDao = otpConfigDao;
     }
 

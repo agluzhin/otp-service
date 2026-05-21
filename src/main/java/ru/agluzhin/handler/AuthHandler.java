@@ -1,22 +1,22 @@
 package ru.agluzhin.handler;
 
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.agluzhin.exception.AdminAlreadyExistsException;
 import ru.agluzhin.exception.InvalidCredentialsException;
 import ru.agluzhin.exception.UserAlreadyExistsException;
 import ru.agluzhin.model.Role;
 import ru.agluzhin.service.AuthService;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Map;
 
 /**
  * Handles public authentication endpoints:
- *   POST /auth/register
- *   POST /auth/login
+ * POST /auth/register
+ * POST /auth/login
  */
 public class AuthHandler extends BaseHandler implements HttpHandler {
 
@@ -31,7 +31,7 @@ public class AuthHandler extends BaseHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String method = exchange.getRequestMethod();
-        String path   = exchange.getRequestURI().getPath();
+        String path = exchange.getRequestURI().getPath();
 
         log.info("→ {} {}", method, path);
 
@@ -54,9 +54,9 @@ public class AuthHandler extends BaseHandler implements HttpHandler {
     private void handleRegister(HttpExchange exchange) throws IOException {
         Map<String, Object> body = parseJson(readBody(exchange));
 
-        String login    = requireString(body, "login");
+        String login = requireString(body, "login");
         String password = requireString(body, "password");
-        String roleStr  = requireString(body, "role");
+        String roleStr = requireString(body, "role");
 
         Role role;
         try {
@@ -70,9 +70,7 @@ public class AuthHandler extends BaseHandler implements HttpHandler {
             authService.register(login, password, role);
             log.info("← 201 registered login={} role={}", login, role);
             sendJson(exchange, 201, Map.of("message", "User registered successfully"));
-        } catch (UserAlreadyExistsException e) {
-            sendError(exchange, 409, e.getMessage());
-        } catch (AdminAlreadyExistsException e) {
+        } catch (UserAlreadyExistsException | AdminAlreadyExistsException e) {
             sendError(exchange, 409, e.getMessage());
         }
     }
@@ -80,7 +78,7 @@ public class AuthHandler extends BaseHandler implements HttpHandler {
     private void handleLogin(HttpExchange exchange) throws IOException {
         Map<String, Object> body = parseJson(readBody(exchange));
 
-        String login    = requireString(body, "login");
+        String login = requireString(body, "login");
         String password = requireString(body, "password");
 
         try {

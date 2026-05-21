@@ -1,10 +1,10 @@
 package ru.agluzhin.dao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.agluzhin.config.DatabaseConfig;
 import ru.agluzhin.model.OtpCode;
 import ru.agluzhin.model.OtpStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -18,7 +18,7 @@ public class OtpCodeDao {
     private final DataSource dataSource;
 
     public OtpCodeDao() {
-        this.dataSource = DatabaseConfig.getInstance().getDataSource();
+        this.dataSource = DatabaseConfig.getINSTANCE().getDataSource();
     }
 
     public OtpCodeDao(DataSource dataSource) {

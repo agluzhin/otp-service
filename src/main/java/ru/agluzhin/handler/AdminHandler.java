@@ -1,12 +1,12 @@
 package ru.agluzhin.handler;
 
-import ru.agluzhin.exception.UserNotFoundException;
-import ru.agluzhin.model.User;
-import ru.agluzhin.service.AdminService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.agluzhin.exception.UserNotFoundException;
+import ru.agluzhin.model.User;
+import ru.agluzhin.service.AdminService;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,9 +14,9 @@ import java.util.Map;
 
 /**
  * Handles admin-only endpoints (protected by JwtFilter with Role.ADMIN):
- *   POST   /admin/otp-config         — update OTP config
- *   GET    /admin/users              — list all non-admin users
- *   DELETE /admin/users/{id}         — delete user by id
+ * POST   /admin/otp-config         — update OTP config
+ * GET    /admin/users              — list all non-admin users
+ * DELETE /admin/users/{id}         — delete user by id
  */
 public class AdminHandler extends BaseHandler implements HttpHandler {
 
@@ -31,7 +31,7 @@ public class AdminHandler extends BaseHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String method = exchange.getRequestMethod();
-        String path   = exchange.getRequestURI().getPath();
+        String path = exchange.getRequestURI().getPath();
 
         log.info("→ {} {} userId={}", method, path, getUserId(exchange));
 
@@ -67,12 +67,11 @@ public class AdminHandler extends BaseHandler implements HttpHandler {
     private void handleListUsers(HttpExchange exchange) throws IOException {
         List<User> users = adminService.listUsers();
 
-        // Return only safe fields — never expose password hashes
         List<Map<String, Object>> response = users.stream()
                 .map(u -> Map.<String, Object>of(
-                        "id",    u.getId(),
+                        "id", u.getId(),
                         "login", u.getLogin(),
-                        "role",  u.getRole().name()))
+                        "role", u.getRole().name()))
                 .toList();
 
         log.info("← 200 listing {} user(s)", users.size());

@@ -24,8 +24,8 @@ public class TelegramNotificationService implements NotificationChannel {
 
     public TelegramNotificationService() {
         Properties cfg = loadConfig();
-        this.botToken   = cfg.getProperty("telegram.bot.token");
-        this.chatId     = cfg.getProperty("telegram.chat.id");
+        this.botToken = cfg.getProperty("telegram.bot.token");
+        this.chatId = cfg.getProperty("telegram.chat.id");
         this.apiBaseUrl = cfg.getProperty("telegram.api.url");
         this.httpClient = HttpClient.newHttpClient();
     }
@@ -34,8 +34,8 @@ public class TelegramNotificationService implements NotificationChannel {
     public void send(String destination, String code) {
         // 'destination' is ignored here; message goes to the configured chatId.
         // In a multi-user scenario, destination would be a per-user chatId stored in the DB.
-        String text    = URLEncoder.encode("Your OTP code: " + code, StandardCharsets.UTF_8);
-        String url     = apiBaseUrl + botToken + "/sendMessage?chat_id=" + chatId + "&text=" + text;
+        String text = URLEncoder.encode("Your OTP code: " + code, StandardCharsets.UTF_8);
+        String url = apiBaseUrl + botToken + "/sendMessage?chat_id=" + chatId + "&text=" + text;
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))

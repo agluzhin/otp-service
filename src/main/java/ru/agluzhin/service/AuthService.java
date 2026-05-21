@@ -1,5 +1,10 @@
 package ru.agluzhin.service;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import org.mindrot.jbcrypt.BCrypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.agluzhin.config.AppConfig;
 import ru.agluzhin.dao.UserDao;
 import ru.agluzhin.exception.AdminAlreadyExistsException;
@@ -7,11 +12,6 @@ import ru.agluzhin.exception.InvalidCredentialsException;
 import ru.agluzhin.exception.UserAlreadyExistsException;
 import ru.agluzhin.model.Role;
 import ru.agluzhin.model.User;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
-import org.mindrot.jbcrypt.BCrypt;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -31,7 +31,7 @@ public class AuthService {
 
     public AuthService(UserDao userDao) {
         this.userDao = userDao;
-        AppConfig cfg = AppConfig.getInstance();
+        AppConfig cfg = AppConfig.getINSTANCE();
         this.jwtKey = Keys.hmacShaKeyFor(cfg.getJwtSecret().getBytes(StandardCharsets.UTF_8));
         this.jwtExpirationMs = cfg.getJwtExpirationSeconds() * 1000L;
     }
@@ -112,8 +112,6 @@ public class AuthService {
                 Role.valueOf(claims.get("role", String.class))
         );
     }
-
-    // --- Validation helpers ---
 
     private void validateLogin(String login) {
         if (login == null || login.isBlank() || login.length() < 3 || login.length() > 100) {

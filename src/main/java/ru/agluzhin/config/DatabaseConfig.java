@@ -2,16 +2,18 @@ package ru.agluzhin.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
-import javax.sql.DataSource;
+import lombok.Getter;
 
 public class DatabaseConfig {
 
+    @Getter
     private static final DatabaseConfig INSTANCE = new DatabaseConfig();
+
+    @Getter
     private final HikariDataSource dataSource;
 
     private DatabaseConfig() {
-        AppConfig cfg = AppConfig.getInstance();
+        AppConfig cfg = AppConfig.getINSTANCE();
 
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(cfg.getDbUrl());
@@ -25,14 +27,6 @@ public class DatabaseConfig {
         hikariConfig.setPoolName("OtpServicePool");
 
         this.dataSource = new HikariDataSource(hikariConfig);
-    }
-
-    public static DatabaseConfig getInstance() {
-        return INSTANCE;
-    }
-
-    public DataSource getDataSource() {
-        return dataSource;
     }
 
 }
