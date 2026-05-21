@@ -76,8 +76,6 @@ class AuthServiceTest {
 
     @Test
     void register_throws_whenPasswordTooShort() {
-        when(userDao.findByLogin("alice")).thenReturn(Optional.empty());
-
         assertThatThrownBy(() -> authService.register("alice", "123", Role.USER))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Password");
